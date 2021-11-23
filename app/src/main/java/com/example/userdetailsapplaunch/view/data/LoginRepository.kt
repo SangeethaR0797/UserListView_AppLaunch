@@ -1,5 +1,8 @@
 package com.example.userdetailsapplaunch.view.data
 
+import androidx.navigation.Navigation
+import com.example.userdetailsapplaunch.R
+import com.example.userdetailsapplaunch.view.UserListFragment
 import com.example.userdetailsapplaunch.view.data.model.LoggedInUser
 
 /**
@@ -37,6 +40,7 @@ class LoginRepository(val dataSource: LoginDataSource) {
 
         return result
     }
+
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {
         this.user = loggedInUser

@@ -1,51 +1,57 @@
 package com.example.userdetailsapplaunch.repository
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
+import com.example.userdetailsapplaunch.room.UserDAOAccess
 import com.example.userdetailsapplaunch.room.UserDataBase
 import com.example.userdetailsapplaunch.room.UserTableModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
-class UserRepository()
+public class UserRepository()
 {
     companion object {
 
-        var userDatabase: UserDataBase? = null
+        lateinit var userDatabase: UserDataBase
 
         var userTableModel: LiveData<List<UserTableModel>>? = null
 
+        lateinit var userDAOAccess:UserDAOAccess
+
         fun initializeDB(context: Context) : UserDataBase {
-            return UserDataBase.getDataseClient(context)
+            userDatabase= UserDataBase.getDataseClient(context)
+            userDAOAccess= userDatabase.userDao()
+            return userDatabase
         }
 
-        suspend fun insertUserDetails(context: Context, username: String, lastname: String,emailid:String) {
-
-            userDatabase = initializeDB(context)
+        suspend fun insertUserDetails(
+            username: String,
+            lastname: String,
+            emailid: String
+        ) {
 
             CoroutineScope(IO).launch {
-                val loginDetails = UserTableModel(username,lastname,emailid)
-                userDatabase?.userDao()?.insertUserDetails(loginDetails)
+                val loginDetails = UserTableModel(username, lastname, emailid)
+                userDAOAccess.insertUserDetails(loginDetails)
             }
 
         }
 
-        fun getUserDetails(context: Context) : LiveData<List<UserTableModel>>? {
+        fun getUserDetails() : LiveData<List<UserTableModel>> {
 
-            userDatabase = initializeDB(context)
 
-            userTableModel = userDatabase?.userDao()?.getUserDetails()
+            userTableModel = userDAOAccess.getUserDetails()
 
-            return userTableModel
+            return userTableModel as LiveData<List<UserTableModel>>
         }
 
-        suspend fun deleteUser(context: Context,userDetails:UserTableModel)
+        suspend fun deleteUser(context: Context, userDetails: UserTableModel)
         {
-            userDatabase = initializeDB(context)
 
             CoroutineScope(IO).launch {
-                userDatabase?.userDao()?.deleteUserDetail(userDetails)
+                userDAOAccess.deleteUserDetail(userDetails)
             }
         }
 

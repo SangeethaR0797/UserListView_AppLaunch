@@ -7,7 +7,7 @@ import android.util.Patterns
 import com.example.userdetailsapplaunch.R
 import com.example.userdetailsapplaunch.view.data.LoginRepository
 import com.example.userdetailsapplaunch.view.data.Result
-
+import java.util.regex.Pattern
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -27,6 +27,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         } else {
             _loginResult.value = LoginResult(error = R.string.login_failed)
         }
+
     }
 
     fun loginDataChanged(username: String, password: String) {
@@ -50,6 +51,6 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     // A placeholder password validation check
     private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
+        return password.length > 5 && Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$").matcher(password).matches()
     }
 }

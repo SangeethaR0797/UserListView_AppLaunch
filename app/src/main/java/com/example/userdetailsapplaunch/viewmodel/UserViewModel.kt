@@ -4,17 +4,19 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.userdetailsapplaunch.model.UserModel
 import com.example.userdetailsapplaunch.repository.UserRepository
 import com.example.userdetailsapplaunch.room.UserDataBase
 import com.example.userdetailsapplaunch.room.UserTableModel
+import com.example.userdetailsapplaunch.view.ui.login.LoginFormState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class UserViewModel(application: Application) : AndroidViewModel(Application()) {
 
-    var userDetailsList: LiveData<List<UserTableModel>> = TODO()
-    val repository: UserRepository
+    var repository: UserRepository=UserRepository()
 
     // on below line we are initializing
     // our dao, repository and all notes
@@ -24,17 +26,25 @@ class UserViewModel(application: Application) : AndroidViewModel(Application()) 
     }
 
     suspend fun insertData(context: Context, username: String, lastname: String, emailid: String) {
-        UserRepository.insertUserDetails(context, username, lastname, emailid)
+        UserRepository.insertUserDetails(username, lastname, emailid)
     }
 
-    fun getLoginDetails(context: Context, username: String) = viewModelScope.launch(Dispatchers.IO)
+    fun getUserDetails(context: Context) = viewModelScope.launch(Dispatchers.IO)
     {
-        UserRepository.getUserDetails(context)
+        UserRepository.getUserDetails()
     }
 
     fun deleteNote(context: Context, userDetails: UserTableModel) =
         viewModelScope.launch(Dispatchers.IO) {
             UserRepository.deleteUser(context, userDetails)
         }
+
+
+    private val addUserData:MutableLiveData<UserModel> = MutableLiveData<UserModel>()
+
+    suspend fun insertUserData(userData:UserModel)
+    {
+        UserRepository.insertUserDetails(userData.firstName,userData.lastName,userData.emailId)
+    }
 
 }

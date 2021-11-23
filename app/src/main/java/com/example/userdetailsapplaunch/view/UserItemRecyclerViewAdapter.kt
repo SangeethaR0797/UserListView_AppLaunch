@@ -6,15 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.userdetailsapplaunch.R
+import com.example.userdetailsapplaunch.model.UserModel
 
 import com.example.userdetailsapplaunch.view.dummy.DummyContent.DummyItem
 
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem].
- * TODO: Replace the implementation with code for your data type.
- */
+
 class UserItemRecyclerViewAdapter(
-    private val values: List<DummyItem>
+    private val values: List<UserModel>
 ) : RecyclerView.Adapter<UserItemRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,8 +23,9 @@ class UserItemRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        val name=item.firstName +" "+item.lastName
+        holder.idView.text = name
+        holder.contentView.text = item.emailId
     }
 
     override fun getItemCount(): Int = values.size

@@ -17,7 +17,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/welcome_text"
-        android:textColor="color"
+        android:textColor="@color/black"
+        android:textAlignment="center"
         android:textSize="18sp"
         android:padding="15dp"
         app:layout_constraintBottom_toTopOf="@+id/username"
@@ -25,7 +26,8 @@
         android:background="@android:color/transparent"
         tools:layout_editor_absoluteX="150dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/username"
